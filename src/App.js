@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import LoginPage from './pages/LoginPage';
+import UsersPage from './pages/UsersPage';
+import EditPage from './pages/EditPage';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [users, setUsers] = useState([]); 
+
+  const updateUser = (updatedUser) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+      )
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container mt-4">
+        <Navbar token={token} setToken={setToken} />
+        <Routes>
+          <Route exact path="/" element={
+            token ? <Navigate to="/users" /> : <LoginPage setToken={setToken} />
+          } />
+          <Route path="/users" element={
+            token ? <UsersPage token={token} setToken={setToken} users={users} setUsers={setUsers} /> : <Navigate to="/" />
+          } />
+          <Route path="/edit/:id" element={
+            token ? <EditPage token={token} onUpdateUser={updateUser} /> : <Navigate to="/" />
+          } />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

@@ -1,0 +1,11 @@
+.brand-name {
+    font-size: 1.5rem; 
+    letter-spacing: 1px;
+    text-transform: uppercase; 
+    transition: color 0.3s ease; 
+  }
+  
+  .brand-name:hover {
+    color: #007bff; 
+    cursor: pointer; 
+  }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://reqres.in/';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://reqres.in/'; 
 
 export const login = (email, password) =>
   axios.post(`${BASE_URL}api/login`, { email, password });
